@@ -15,12 +15,43 @@ export const apiClient = axios.create({
   }
 });
 
-// Attach Authorization Bearer token as fallback for environments blocking cross-site cookies
+/**
+ * Configure or clear the active Bearer token in both localStorage
+ * and default Axios request headers.
+ */
+export const setAuthToken = (token) => {
+  if (token) {
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('tortillon_auth_token', token);
+    }
+    apiClient.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+  } else {
+    if (typeof window !== 'undefined') {
+      localStorage.removeItem('tortillon_auth_token');
+    }
+    delete apiClient.defaults.headers.common['Authorization'];
+  }
+};
+
+// Immediately restore authentication header on script evaluation
+if (typeof window !== 'undefined') {
+  const initialToken = localStorage.getItem('tortillon_auth_token');
+  if (initialToken) {
+    apiClient.defaults.headers.common['Authorization'] = `Bearer ${initialToken}`;
+  }
+}
+
+// Request interceptor: ensure Authorization header is always assigned on every outgoing request
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
     const token = localStorage.getItem('tortillon_auth_token');
-    if (token && !config.headers.Authorization) {
-      config.headers.Authorization = `Bearer ${token}`;
+    if (token) {
+      if (config.headers?.set) {
+        config.headers.set('Authorization', `Bearer ${token}`, true);
+      } else {
+        config.headers = config.headers || {};
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
     }
   }
   return config;
@@ -41,8 +72,8 @@ apiClient.interceptors.response.use(
     const status = error.response ? error.response.status : null;
     const data = error.response ? error.response.data : null;
 
-    if (status === 401 && typeof window !== 'undefined') {
-      localStorage.removeItem('tortillon_auth_token');
+    if (status === 401) {
+      setAuthToken(null);
     }
 
     const formattedError = new Error(

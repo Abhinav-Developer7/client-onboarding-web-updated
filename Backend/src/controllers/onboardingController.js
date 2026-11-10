@@ -1,3 +1,4 @@
+import mongoose from 'mongoose';
 import { Onboarding } from '../models/Onboarding.js';
 
 /**
@@ -268,12 +269,12 @@ export const getSubmissionById = async (req, res, next) => {
     const { id } = req.params;
     let submission;
 
-    if (id.startsWith('CL-')) {
-      submission = await Onboarding.findOne({ referenceId: id })
+    if (mongoose.isValidObjectId(id)) {
+      submission = await Onboarding.findById(id)
         .populate('reviewedBy', 'fullName email')
         .lean();
     } else {
-      submission = await Onboarding.findById(id)
+      submission = await Onboarding.findOne({ referenceId: new RegExp(`^${id}$`, 'i') })
         .populate('reviewedBy', 'fullName email')
         .lean();
     }
@@ -311,8 +312,12 @@ export const updateSubmissionStatus = async (req, res, next) => {
       updateFields.reviewedBy = req.user._id;
     }
 
-    const updated = await Onboarding.findByIdAndUpdate(
-      id,
+    const query = mongoose.isValidObjectId(id)
+      ? { _id: id }
+      : { referenceId: new RegExp(`^${id}$`, 'i') };
+
+    const updated = await Onboarding.findOneAndUpdate(
+      query,
       { $set: updateFields },
       { new: true, runValidators: true }
     ).populate('reviewedBy', 'fullName email');

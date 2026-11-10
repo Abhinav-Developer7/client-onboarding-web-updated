@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { apiService } from '../services/api';
+import { apiService, setAuthToken } from '../services/api';
 
 const AuthContext = createContext(null);
 
@@ -10,17 +10,24 @@ export const AuthProvider = ({ children }) => {
   // Check active session on initial mount
   useEffect(() => {
     const checkSession = async () => {
+      // Re-apply stored token before verifying session
+      if (typeof window !== 'undefined') {
+        const storedToken = localStorage.getItem('tortillon_auth_token');
+        if (storedToken) {
+          setAuthToken(storedToken);
+        }
+      }
+
       try {
         const response = await apiService.getMe();
         if (response.success && response.user) {
           setUser(response.user);
         } else {
+          setAuthToken(null);
           setUser(null);
         }
       } catch (err) {
-        if (typeof window !== 'undefined') {
-          localStorage.removeItem('tortillon_auth_token');
-        }
+        setAuthToken(null);
         setUser(null);
       } finally {
         setLoading(false);
@@ -33,8 +40,8 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     const response = await apiService.login(credentials);
     if (response.success && response.user) {
-      if (response.token && typeof window !== 'undefined') {
-        localStorage.setItem('tortillon_auth_token', response.token);
+      if (response.token) {
+        setAuthToken(response.token);
       }
       setUser(response.user);
       return response.user;
@@ -48,9 +55,7 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.error('Logout error:', err);
     } finally {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('tortillon_auth_token');
-      }
+      setAuthToken(null);
       setUser(null);
     }
   };

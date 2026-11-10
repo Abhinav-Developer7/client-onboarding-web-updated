@@ -68,18 +68,23 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-4);
-  align-items: start;
+  align-items: stretch;
 }
 
 .dashboard-table-area {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .spotlight-card {
-  padding: var(--space-5);
+  padding: var(--space-6);
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-5);
+  height: 100%;
+  min-height: 340px;
+  justify-content: space-between;
 }
 
 .spotlight-header {
@@ -207,8 +212,9 @@
 */
 @media (min-width: 1180px) {
   .dashboard-bottom-grid {
-    grid-template-columns: minmax(0, 1fr) minmax(240px, 280px);
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
     gap: var(--space-5);
+    align-items: stretch;
   }
 }
 
