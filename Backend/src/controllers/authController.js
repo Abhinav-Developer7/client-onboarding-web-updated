@@ -14,10 +14,11 @@ const sendTokenResponse = (user, statusCode, res) => {
   });
 
   const isProduction = process.env.NODE_ENV === 'production';
+  // Use 'none' in production to allow cross-origin requests between frontend & backend with HTTPS
   const cookieOptions = {
     httpOnly: true,
     secure: isProduction,
-    sameSite: isProduction ? 'strict' : 'lax',
+    sameSite: isProduction ? 'none' : 'lax',
     maxAge: 24 * 60 * 60 * 1000 // 1 day
   };
 
@@ -25,6 +26,7 @@ const sendTokenResponse = (user, statusCode, res) => {
 
   res.status(statusCode).json({
     success: true,
+    token, // Provided for dual-layer authentication (Authorization: Bearer fallback)
     user: {
       id: user._id,
       email: user.email,
@@ -69,10 +71,11 @@ export const login = async (req, res, next) => {
  * POST /api/auth/logout
  */
 export const logout = (req, res) => {
+  const isProduction = process.env.NODE_ENV === 'production';
   res.clearCookie('token', {
     httpOnly: true,
-    sameSite: process.env.NODE_ENV === 'production' ? 'strict' : 'lax',
-    secure: process.env.NODE_ENV === 'production'
+    sameSite: isProduction ? 'none' : 'lax',
+    secure: isProduction
   });
 
   res.json({

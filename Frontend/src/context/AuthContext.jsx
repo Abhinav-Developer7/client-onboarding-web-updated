@@ -18,6 +18,9 @@ export const AuthProvider = ({ children }) => {
           setUser(null);
         }
       } catch (err) {
+        if (typeof window !== 'undefined') {
+          localStorage.removeItem('tortillon_auth_token');
+        }
         setUser(null);
       } finally {
         setLoading(false);
@@ -30,6 +33,9 @@ export const AuthProvider = ({ children }) => {
   const login = async (credentials) => {
     const response = await apiService.login(credentials);
     if (response.success && response.user) {
+      if (response.token && typeof window !== 'undefined') {
+        localStorage.setItem('tortillon_auth_token', response.token);
+      }
       setUser(response.user);
       return response.user;
     }
@@ -42,6 +48,9 @@ export const AuthProvider = ({ children }) => {
     } catch (err) {
       console.error('Logout error:', err);
     } finally {
+      if (typeof window !== 'undefined') {
+        localStorage.removeItem('tortillon_auth_token');
+      }
       setUser(null);
     }
   };

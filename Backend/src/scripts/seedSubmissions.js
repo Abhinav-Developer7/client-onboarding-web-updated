@@ -162,7 +162,7 @@ const sampleSubmissions = [
 ];
 
 const seedSubmissions = async () => {
-  const mongoURI = process.env.MONGO_URI || 'mongodb+srv://abhinavns2005_db_user:Appu3778@cluster0.z6cjsn9.mongodb.net/client_onboarding';
+  const mongoURI = process.env.MONGO_URI || "";
 
   try {
     await mongoose.connect(mongoURI);

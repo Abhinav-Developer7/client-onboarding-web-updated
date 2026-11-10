@@ -84,23 +84,31 @@ export const getDashboardData = async (req, res, next) => {
 
       // 2. Exactly 5 recent client submissions with light projection
       Onboarding.find()
-        .sort({ submittedAt: -1 })
+        .sort({ submittedAt: -1, createdAt: -1 })
         .limit(5)
-        .select('referenceId customerDetails.businessLegalName customerDetails.customerType contactDetails.email contactDetails.contactPerson submittedAt status')
+        .select('referenceId customerDetails.businessLegalName customerDetails.customerType contactDetails.email contactDetails.contactPerson submittedAt createdAt status')
         .lean(),
 
-      // 3. Monthly submissions for last 6 months
+      // 3. Monthly submissions for last 6 months (resilient to date types)
       Onboarding.aggregate([
         {
           $match: {
-            submittedAt: { $gte: sixMonthsAgo }
+            $or: [
+              { submittedAt: { $gte: sixMonthsAgo } },
+              { submittedAt: { $exists: false }, createdAt: { $gte: sixMonthsAgo } }
+            ]
+          }
+        },
+        {
+          $project: {
+            resolvedDate: { $toDate: { $ifNull: ['$submittedAt', '$createdAt'] } }
           }
         },
         {
           $group: {
             _id: {
-              year: { $year: '$submittedAt' },
-              month: { $month: '$submittedAt' }
+              year: { $year: '$resolvedDate' },
+              month: { $month: '$resolvedDate' }
             },
             count: { $sum: 1 }
           }

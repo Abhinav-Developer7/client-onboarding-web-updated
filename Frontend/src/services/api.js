@@ -15,6 +15,17 @@ export const apiClient = axios.create({
   }
 });
 
+// Attach Authorization Bearer token as fallback for environments blocking cross-site cookies
+apiClient.interceptors.request.use((config) => {
+  if (typeof window !== 'undefined') {
+    const token = localStorage.getItem('tortillon_auth_token');
+    if (token && !config.headers.Authorization) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+  }
+  return config;
+});
+
 // Standardize response data and error handling
 apiClient.interceptors.response.use(
   (response) => {
@@ -29,6 +40,10 @@ apiClient.interceptors.response.use(
 
     const status = error.response ? error.response.status : null;
     const data = error.response ? error.response.data : null;
+
+    if (status === 401 && typeof window !== 'undefined') {
+      localStorage.removeItem('tortillon_auth_token');
+    }
 
     const formattedError = new Error(
       (data && data.message) || error.message || 'An unexpected network error occurred'
