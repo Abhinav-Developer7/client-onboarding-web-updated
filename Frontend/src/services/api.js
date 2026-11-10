@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://onboarding-backend.tsuite.i/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://onboarding-backend.tsuite.in/api';
 
 /**
  * Pre-configured Axios instance
