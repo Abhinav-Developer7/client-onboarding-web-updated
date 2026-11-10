@@ -1,0 +1,60 @@
+/* Glass select — matches InputField language */
+.select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.form-select {
+  width: 100%;
+  padding: 0.78rem 2.6rem 0.78rem 0.95rem;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-primary);
+  background-color: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.16);
+  border-radius: var(--radius-squircle);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+  outline: none;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23525252' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center;
+  background-size: 1rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background-color var(--transition-fast);
+}
+
+@supports (backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px)) {
+  .form-select {
+    background-color: rgba(255, 255, 255, 0.88);
+    border-color: rgba(0, 0, 0, 0.16);
+    -webkit-backdrop-filter: var(--glass-blur-soft);
+    backdrop-filter: var(--glass-blur-soft);
+  }
+}
+
+.form-select:hover:not(:disabled):not(:focus) {
+  border-color: rgba(0, 0, 0, 0.28);
+}
+
+.form-select:focus {
+  border-color: var(--color-accent);
+  background-color: #ffffff;
+  box-shadow: var(--glass-focus-ring);
+}
+
+.form-select:disabled {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-muted);
+  cursor: not-allowed;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.form-field-group.has-error .form-select {
+  border-color: var(--color-error);
+  background-color: rgba(255, 253, 253, 0.9);
+}
+
+.form-field-group.has-error .form-select:focus {
+  box-shadow: 0 0 0 3px rgba(153, 27, 27, 0.12);
+}

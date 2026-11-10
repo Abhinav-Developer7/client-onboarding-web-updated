@@ -1,0 +1,47 @@
+/* Public app header — frosted bar + Tortillon wordmark */
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.header-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: var(--topbar-height);
+  max-width: var(--dashboard-max-width);
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+}
+
+.brand-logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+}
+
+.brand-logo:hover .brand-wordmark {
+  opacity: 0.85;
+}
+
+.brand-wordmark {
+  transition: opacity var(--transition-fast);
+}
+
+.btn-admin-access {
+  padding: 0.45rem 0.95rem;
+  font-size: var(--font-size-xs);
+}
+
+@media (max-width: 640px) {
+  .header-container {
+    padding: 0 var(--space-4);
+  }
+
+  .brand-wordmark {
+    height: 1.45rem;
+    max-width: 130px;
+  }
+}

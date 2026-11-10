@@ -1,0 +1,229 @@
+.oshimmer-page {
+  min-height: calc(100vh - 4.25rem);
+  min-height: calc(100dvh - 4.25rem);
+  padding: var(--space-5) var(--space-4) var(--space-10);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.oshimmer-shell {
+  width: 100%;
+  max-width: var(--container-max-width);
+  padding: var(--space-5);
+  box-sizing: border-box;
+}
+
+.oshimmer-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--space-3);
+  margin-bottom: var(--space-5);
+  border-radius: var(--radius-squircle);
+  background-color: var(--glass-bg-inset);
+  border: 1px solid var(--glass-border-dark);
+  box-sizing: border-box;
+}
+
+.oshimmer-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+  flex: 0 0 auto;
+  min-width: 2.75rem;
+}
+
+.oshimmer-dot {
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: var(--radius-squircle);
+}
+
+.oshimmer-step-label {
+  width: 2.4rem;
+  height: 0.5rem;
+  border-radius: var(--radius-squircle);
+}
+
+.oshimmer-connector {
+  flex: 1 1 auto;
+  height: 2px;
+  margin: 0 0.2rem 1.1rem;
+  border-radius: var(--radius-full);
+  background: rgba(0, 0, 0, 0.08);
+  align-self: center;
+  min-width: 0.5rem;
+}
+
+.oshimmer-body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: start;
+  width: 100%;
+}
+
+.oshimmer-guide {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  order: -1;
+  width: 100%;
+}
+
+.oshimmer-guide-figure {
+  width: min(52vw, 180px);
+  aspect-ratio: 3 / 4;
+  max-height: 220px;
+  height: auto;
+  border-radius: var(--radius-squircle);
+}
+
+.oshimmer-guide-caption {
+  width: min(70%, 9rem);
+  height: 0.7rem;
+  margin-top: var(--space-2);
+  border-radius: var(--radius-squircle);
+}
+
+.oshimmer-form {
+  min-width: 0;
+  width: 100%;
+}
+
+.oshimmer-form-header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-5);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--glass-border-dark);
+}
+
+.oshimmer-form-title {
+  width: min(100%, 15rem);
+  height: 1.55rem;
+  border-radius: var(--radius-squircle);
+}
+
+.oshimmer-form-sub {
+  width: min(100%, 20rem);
+  height: 0.7rem;
+  border-radius: var(--radius-squircle);
+}
+
+.oshimmer-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.oshimmer-field-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+.oshimmer-field {
+  width: 100%;
+  height: 2.85rem;
+  border-radius: var(--radius-squircle);
+}
+
+.oshimmer-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-8);
+  padding-top: var(--space-5);
+  border-top: 1px solid var(--glass-border-dark);
+}
+
+.oshimmer-btn {
+  width: min(100%, 8.75rem);
+  height: var(--btn-height);
+  border-radius: var(--radius-squircle);
+}
+
+@media (min-width: 640px) {
+  .oshimmer-page {
+    padding: var(--space-8) var(--space-4) var(--space-12);
+  }
+
+  .oshimmer-shell {
+    padding: var(--space-8);
+  }
+
+  .oshimmer-stepper {
+    padding: var(--space-4) var(--space-5);
+  }
+
+  .oshimmer-step {
+    min-width: 5rem;
+  }
+
+  .oshimmer-step-label {
+    width: 4.25rem;
+    height: 0.55rem;
+  }
+
+  .oshimmer-guide-figure {
+    width: min(42vw, 220px);
+    max-height: 280px;
+  }
+
+  .oshimmer-field-row {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 900px) {
+  .oshimmer-shell {
+    max-width: 1040px;
+  }
+
+  .oshimmer-body {
+    grid-template-columns: minmax(200px, 0.85fr) minmax(0, 1.35fr);
+    gap: var(--space-6);
+    align-items: center;
+  }
+
+  .oshimmer-guide {
+    order: 0;
+  }
+
+  .oshimmer-guide-figure {
+    width: min(100%, 280px);
+    max-height: 320px;
+  }
+
+  .oshimmer-guide-caption {
+    width: 10rem;
+    margin-top: var(--space-3);
+  }
+}
+
+@media (max-width: 379px) {
+  .oshimmer-step-label {
+    display: none;
+  }
+
+  .oshimmer-guide-figure {
+    width: min(46vw, 140px);
+    max-height: 170px;
+  }
+
+  .oshimmer-page {
+    padding: var(--space-4) var(--space-3) var(--space-8);
+  }
+
+  .oshimmer-shell {
+    padding: var(--space-4);
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "name": "client-onboarding-web",
+  "version": "1.0.0",
+  "private": true,
+  "workspaces": [
+    "Backend",
+    "Frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm --workspace Backend run dev",
+    "dev:frontend": "npm --workspace Frontend run dev",
+    "build:frontend": "npm --workspace Frontend run build"
+  }
+}
+

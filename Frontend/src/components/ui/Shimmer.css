@@ -1,0 +1,203 @@
+.shimmer-block {
+  display: block;
+  flex-shrink: 0;
+}
+
+.shimmer-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  width: 100%;
+}
+
+.shimmer-line {
+  height: 0.75rem;
+  width: 100%;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-line-1 { width: 92%; }
+.shimmer-line-2 { width: 78%; }
+.shimmer-line-3 { width: 64%; }
+
+.shimmer-avatar {
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-title {
+  height: 1.15rem;
+  width: 70%;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-title.is-lg {
+  height: 1.65rem;
+  width: min(100%, 16rem);
+}
+
+.shimmer-meta {
+  height: 0.7rem;
+  width: 45%;
+  max-width: 10rem;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-back {
+  width: 5.5rem;
+  height: 2.25rem;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-section-title {
+  height: 0.9rem;
+  width: 8rem;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-chip {
+  width: 4.5rem;
+  height: 1.55rem;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-chip.is-wide {
+  width: 6.5rem;
+}
+
+.shimmer-field {
+  height: 2.4rem;
+  width: 100%;
+  border-radius: var(--radius-squircle);
+}
+
+.shimmer-field.is-wide {
+  grid-column: 1 / -1;
+}
+
+.shimmer-field.is-full {
+  width: 100%;
+}
+
+.shimmer-field.is-tall {
+  height: 6rem;
+}
+
+.shimmer-action {
+  height: var(--btn-height);
+  width: 100%;
+  margin-top: var(--space-2);
+  border-radius: var(--radius-squircle);
+}
+
+.page-shimmer-top {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.page-shimmer-top-copy {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.page-shimmer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-1);
+}
+
+.detail-shimmer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.detail-shimmer-identity {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-4);
+}
+
+.detail-shimmer-title-stack {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  min-width: 0;
+}
+
+.detail-shimmer-meta-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.detail-shimmer-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  align-items: start;
+}
+
+.detail-shimmer-main {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  min-width: 0;
+}
+
+.detail-shimmer-card {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.detail-shimmer-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.detail-shimmer-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-3);
+}
+
+@media (min-width: 640px) {
+  .detail-shimmer-fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .detail-shimmer-identity {
+    flex-direction: row;
+    align-items: flex-start;
+    padding: var(--space-5);
+  }
+}
+
+@media (min-width: 1024px) {
+  .detail-shimmer-grid {
+    grid-template-columns: minmax(0, 1.7fr) minmax(240px, 0.85fr);
+  }
+
+  .detail-shimmer-side {
+    position: sticky;
+    top: calc(var(--topbar-height) + var(--space-4));
+  }
+}

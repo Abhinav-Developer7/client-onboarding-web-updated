@@ -1,0 +1,81 @@
+/* StatCard Plain CSS */
+.stat-card {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  position: relative;
+}
+
+.stat-card.clickable:hover {
+  border-color: var(--color-border-hover);
+  box-shadow: var(--glass-shadow);
+}
+
+.stat-card.active-stat {
+  border-color: var(--color-accent);
+  background-color: rgba(255, 255, 255, 0.92);
+}
+
+.stat-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.stat-title {
+  font-size: var(--font-size-xs);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-text-secondary);
+}
+
+.stat-icon-wrapper {
+  width: 2rem;
+  height: 2rem;
+  border-radius: var(--radius-squircle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-icon-wrapper.total {
+  background-color: #F3F4F6;
+  color: #374151;
+}
+
+.stat-icon-wrapper.new {
+  background-color: var(--color-status-new-bg);
+  color: var(--color-status-new);
+}
+
+.stat-icon-wrapper.review {
+  background-color: var(--color-status-review-bg);
+  color: var(--color-status-review);
+}
+
+.stat-icon-wrapper.approved {
+  background-color: var(--color-status-approved-bg);
+  color: var(--color-status-approved);
+}
+
+.stat-icon-wrapper.rejected {
+  background-color: var(--color-status-rejected-bg);
+  color: var(--color-status-rejected);
+}
+
+.stat-value {
+  font-size: var(--font-size-3xl);
+  font-weight: 700;
+  color: var(--color-text-primary);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+
+.stat-skeleton {
+  width: 4rem;
+  height: 2rem;
+}
+
