@@ -9,9 +9,17 @@ const sendTokenResponse = (user, statusCode, res) => {
   };
 
   const secret = process.env.JWT_SECRET || 'super_secret_jwt_key_client_onboarding_2026_dev';
-  const token = jwt.sign(payload, secret, {
-    expiresIn: process.env.JWT_EXPIRES_IN || '1d'
-  });
+
+  // Ensure expiresIn is safely formatted and never zero or single-second
+  let expiresIn = process.env.JWT_EXPIRES_IN;
+  if (!expiresIn || expiresIn === '0' || expiresIn === '0s' || expiresIn === '0d' || expiresIn === '1' || expiresIn === '1s') {
+    expiresIn = '7d';
+  } else if (/^\d+$/.test(expiresIn)) {
+    const num = parseInt(expiresIn, 10);
+    expiresIn = num <= 30 ? `${num}d` : num;
+  }
+
+  const token = jwt.sign(payload, secret, { expiresIn });
 
   const isProduction = process.env.NODE_ENV === 'production';
   // Use 'none' in production to allow cross-origin requests between frontend & backend with HTTPS
@@ -19,7 +27,7 @@ const sendTokenResponse = (user, statusCode, res) => {
     httpOnly: true,
     secure: isProduction,
     sameSite: isProduction ? 'none' : 'lax',
-    maxAge: 24 * 60 * 60 * 1000 // 1 day
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
   };
 
   res.cookie('token', token, cookieOptions);
