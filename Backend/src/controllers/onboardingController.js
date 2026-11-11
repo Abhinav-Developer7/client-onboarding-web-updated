@@ -83,11 +83,11 @@ export const getDashboardData = async (req, res, next) => {
         { $group: { _id: '$status', count: { $sum: 1 } } }
       ]),
 
-      // 2. Exactly 5 recent client submissions with light projection
+      // 2. Exactly 5 recent client submissions with complete details for inspection modal
       Onboarding.find()
         .sort({ submittedAt: -1, createdAt: -1 })
         .limit(5)
-        .select('referenceId customerDetails.businessLegalName customerDetails.customerType contactDetails.email contactDetails.contactPerson submittedAt createdAt status')
+        .populate('reviewedBy', 'fullName email')
         .lean(),
 
       // 3. Monthly submissions for last 6 months (resilient to date types)

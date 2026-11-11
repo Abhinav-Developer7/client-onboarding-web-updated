@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   X,
   Building,
@@ -16,18 +16,58 @@ import { apiService } from '../../services/api';
 import './SubmissionDetailModal.css';
 
 export const SubmissionDetailModal = ({ submission, onClose, onStatusUpdated }) => {
-  if (!submission) return null;
-
-  const [status, setStatus] = useState(submission.status || 'new');
-  const [reviewNotes, setReviewNotes] = useState(submission.reviewNotes || '');
+  const [record, setRecord] = useState(submission || null);
+  const [status, setStatus] = useState(submission?.status || 'new');
+  const [reviewNotes, setReviewNotes] = useState(submission?.reviewNotes || '');
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [updateSuccess, setUpdateSuccess] = useState(false);
   const [updateError, setUpdateError] = useState('');
 
-  const customer = submission.customerDetails || {};
-  const tax = submission.taxAndAddressDetails || {};
+  useEffect(() => {
+    if (!submission) {
+      setRecord(null);
+      return;
+    }
+
+    setRecord(submission);
+    setStatus(submission.status || 'new');
+    setReviewNotes(submission.reviewNotes || '');
+    setUpdateSuccess(false);
+    setUpdateError('');
+
+    const targetId = submission._id || submission.referenceId;
+    if (!targetId) return;
+
+    let isMounted = true;
+    const fetchFullDetails = async () => {
+      setIsLoadingDetails(true);
+      try {
+        const res = await apiService.getClientDetails(targetId);
+        if (isMounted && res?.success && res.data) {
+          setRecord(res.data);
+          setStatus(res.data.status || 'new');
+          setReviewNotes(res.data.reviewNotes || '');
+        }
+      } catch (err) {
+        // Keep initial submission fallback if full fetch fails
+      } finally {
+        if (isMounted) setIsLoadingDetails(false);
+      }
+    };
+
+    fetchFullDetails();
+    return () => {
+      isMounted = false;
+    };
+  }, [submission]);
+
+  if (!submission || !record) return null;
+
+  const customer = record.customerDetails || {};
+  const tax = record.taxAndAddressDetails || {};
   const address = tax.address || {};
-  const contact = submission.contactDetails || {};
+  const contact = record.contactDetails || {};
 
   const isGstRegistered =
     tax.gstTreatment === 'Registered - Regular' ||
@@ -40,12 +80,14 @@ export const SubmissionDetailModal = ({ submission, onClose, onStatusUpdated }) 
     setUpdateSuccess(false);
 
     try {
-      const response = await apiService.updateSubmissionStatus(submission._id, {
+      const targetId = record._id || record.referenceId;
+      const response = await apiService.updateSubmissionStatus(targetId, {
         status,
         reviewNotes
       });
 
       if (response.success && response.data) {
+        setRecord(response.data);
         setUpdateSuccess(true);
         if (onStatusUpdated) {
           onStatusUpdated(response.data);
@@ -59,8 +101,8 @@ export const SubmissionDetailModal = ({ submission, onClose, onStatusUpdated }) 
     }
   };
 
-  const formattedDate = submission.submittedAt
-    ? new Date(submission.submittedAt).toLocaleDateString('en-US', {
+  const formattedDate = record.submittedAt
+    ? new Date(record.submittedAt).toLocaleDateString('en-US', {
         year: 'numeric',
         month: 'short',
         day: 'numeric',
@@ -75,9 +117,9 @@ export const SubmissionDetailModal = ({ submission, onClose, onStatusUpdated }) 
         {/* Modal Header */}
         <div className="modal-header">
           <div className="modal-header-info">
-            <span className="modal-reference-id">{submission.referenceId}</span>
-            <span className={`badge badge-${submission.status}`}>
-              {submission.status?.replace('_', ' ')}
+            <span className="modal-reference-id">{record.referenceId}</span>
+            <span className={`badge badge-${record.status}`}>
+              {record.status?.replace('_', ' ')}
             </span>
           </div>
           <button
@@ -98,9 +140,15 @@ export const SubmissionDetailModal = ({ submission, onClose, onStatusUpdated }) 
               <Calendar size={14} />
               <span>Submitted on: <strong>{formattedDate}</strong></span>
             </div>
-            {submission.reviewedBy && (
+            {record.reviewedBy && (
               <div className="meta-item">
-                <span>Last reviewed by: <strong>{submission.reviewedBy.fullName || 'Staff'}</strong></span>
+                <span>Last reviewed by: <strong>{record.reviewedBy.fullName || 'Staff'}</strong></span>
+              </div>
+            )}
+            {isLoadingDetails && (
+              <div className="meta-item">
+                <Loader2 size={14} className="spin-icon" />
+                <span>Refreshing details…</span>
               </div>
             )}
           </div>
