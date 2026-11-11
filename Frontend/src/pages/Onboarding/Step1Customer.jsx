@@ -43,7 +43,6 @@ export const Step1Customer = ({ register, errors, setValue }) => {
           label="Permanent Account Number (PAN)"
           name="customerDetails.pan"
           placeholder="e.g. ABCDE1234F"
-          required
           register={register}
           error={errors.customerDetails?.pan?.message}
           helperText="Standard 10-character PAN (5 uppercase letters, 4 numbers, 1 letter)."
